@@ -25,25 +25,15 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    static String convertStreamToString(java.io.InputStream is) {
-        BufferedReader r = new BufferedReader(new InputStreamReader(is));
-        StringBuilder total = new StringBuilder();
-        String line;
-        try {
-            while ((line = r.readLine()) != null) {
-                total.append(line).append('\n');
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        return total.toString();
-    }
+    public static double latestLatitude  = 60.0;
+    public static double latestLongitude = 24.0;
+    public static FoodCardFragment[] fragments;
 
     private Dish[] loadDishes() {
         AssetManager am = getApplicationContext().getAssets();
         String data = "";
         try {
-            data = convertStreamToString(am.open("foodData.data"));
+            data = Utils.convertStreamToString(am.open("foodData.data"));
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -51,32 +41,36 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<Dish> d = new ArrayList<>();
 
         String[] restaurants = data.trim().split("<restaurantSplitter>");
-        Log.e("FoodFindDebug", "found " + restaurants.length + " restaurants");
+        Log.i("FoodFindDebug", "found " + restaurants.length + " restaurants");
         for (int i = 0; i < restaurants.length; i++) {
             String[] foods = restaurants[i].trim().split("<foodSplitter>");
-            Log.e("FoodFindDebug", " found " + foods.length + " foods in " + restaurants[i]);
+            Log.i("FoodFindDebug", " found " + foods.length + " foods in " + restaurants[i]);
             for (int j = 0; j < foods.length; j++) {
                 String[] properties = foods[j].trim().split("<propertySplitter>");
-                Log.e("FoodFindDebug", "  found " + properties.length + " properties in " + foods[j]);
-                if (properties.length < 12)
+                Log.i("FoodFindDebug", "  found " + properties.length + " properties in " + foods[j]);
+                if (properties.length < 13)
                     break;
 
-                d.add(new Dish(properties[0].trim(),                        //Name
-                        properties[1].trim(),                        //Description
-                        properties[2].trim(),                        //Restaurant
-                        Boolean.parseBoolean(properties[3].trim()),  //Lactose
-                        Boolean.parseBoolean(properties[4].trim()),  //Gluten
-                        Boolean.parseBoolean(properties[5].trim()),  //Vegan
-                        Float.parseFloat(properties[6].trim()),      //Price
-                        Boolean.parseBoolean(properties[7].trim()),  //Breakfast
-                        Boolean.parseBoolean(properties[8].trim()),  //Brunch
-                        Boolean.parseBoolean(properties[9].trim()),  //Lunch
-                        Boolean.parseBoolean(properties[10].trim()), //Dinner
-                        properties[11].trim()));                     //Image
+                d.add(new Dish(properties[0].trim(),                      //Name
+                        properties[1].trim(),                             //Description
+                        properties[2].trim(),                             //Restaurant
+                        Boolean.parseBoolean(properties[3].trim()),       //Lactose
+                        Boolean.parseBoolean(properties[4].trim()),       //Gluten
+                        Boolean.parseBoolean(properties[5].trim()),       //Vegan
+                        Float.parseFloat(properties[6].trim()),           //Price
+                        Boolean.parseBoolean(properties[7].trim()),       //Breakfast
+                        Boolean.parseBoolean(properties[8].trim()),       //Brunch
+                        Boolean.parseBoolean(properties[9].trim()),       //Lunch
+                        Boolean.parseBoolean(properties[10].trim()),      //Dinner
+                        properties[11].trim(),                            //Image
+                        Double.parseDouble(properties[12].split(":")[0]), //Latitude
+                        Double.parseDouble(properties[12].split(":")[1])  //Longitude
+                        ));
+
             }
         }
 
-        Log.e("FoodFindDebug", "found " + d.size() + " dishes");
+        Log.i("FoodFindDebug", "found " + d.size() + " dishes");
         //d[0] = new Dish("Big Mac", "Iconic burger with no ketchup", "McDonalds", true, false, 4.10f, false, true, true, true, "bigmac_transparent");
         return d.toArray(new Dish[d.size()]);
     }
@@ -97,8 +91,13 @@ public class MainActivity extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                Log.e("FoodFindDebug", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
-
+                Log.i("FoodFindDebug", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
+                latestLatitude  = location.getLatitude();
+                latestLongitude = location.getLongitude();
+                for(int i = 0; i < fragments.length; i++)
+                {
+                    fragments[i].updateDistance();
+                }
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -128,7 +127,7 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            FoodCardFragment[] fragments = new FoodCardFragment[dishes.length];
+            fragments = new FoodCardFragment[dishes.length];
 
             for (int i = 0; i < dishes.length; i++) {
                 // Create a new Fragment to be placed in the activity layout
@@ -166,7 +165,7 @@ public class MainActivity extends AppCompatActivity {
             filteredDishes.add(dishes[i]);
         }
 
-        FoodCardFragment[] fragments = new FoodCardFragment[filteredDishes.size()];
+        fragments = new FoodCardFragment[filteredDishes.size()];
 
         for (int i = 0; i < filteredDishes.size(); i++) {
             // Create a new Fragment to be placed in the activity layout

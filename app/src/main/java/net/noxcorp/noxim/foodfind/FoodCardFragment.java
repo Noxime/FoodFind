@@ -1,11 +1,10 @@
 package net.noxcorp.noxim.foodfind;
 
 import android.content.Context;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.widget.CardView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,14 +24,14 @@ import java.text.NumberFormat;
  * Use the {@link FoodCardFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class FoodCardFragment extends Fragment {
+public class FoodCardFragment extends Fragment implements View.OnClickListener {
 
     private Dish dish = new Dish();
-
+    
     private OnFragmentInteractionListener mListener;
 
     public FoodCardFragment() {
-
+        setFromDish(dish);
     }
 
     public void setDish(Dish dish)
@@ -48,9 +47,13 @@ public class FoodCardFragment extends Fragment {
         setRestaurant(dish.restaurant);
         setPrice(dish.priceInEuros);
         setImage(dish.previewImage);
+        setDistance((float)Utils.distance(dish.latitude, dish.longitude, MainActivity.latestLatitude, MainActivity.latestLongitude));
     }
 
-
+    public void updateDistance()
+    {
+        setFromDish(dish);
+    }
 
     public static FoodCardFragment newInstance() {
         FoodCardFragment fragment = new FoodCardFragment();
@@ -58,32 +61,32 @@ public class FoodCardFragment extends Fragment {
         fragment.setArguments(args);
         return fragment;
     }
-    TextView fn;
+    TextView fname;
     public void setName(String text)
     {
         if(v != null && isAdded())
-            fn.setText(text);
+            fname.setText(text);
     }
-    TextView rn;
+    TextView rname;
     public void setRestaurant(String text)
     {
         if(v != null && isAdded())
-            rn.setText(text);
+            rname.setText(text);
     }
-    TextView fd;
+    TextView fdesc;
     public void setDescription(String text){
         if(v != null && isAdded())
-            fd.setText(text);
+            fdesc.setText(text);
     }
-    TextView fp;
+    TextView fpric;
     public void setPrice(float price)
     {
         NumberFormat formatter = new DecimalFormat("###,###,###.##");
         String text = formatter.format(price) + "\u20ac";
         if(v != null && isAdded())
-            fp.setText(text);
+            fpric.setText(text);
     }
-    ImageView iv;
+    ImageView iview;
     public void setImage(String text)
     {
         if(v == null || !isAdded())
@@ -92,8 +95,17 @@ public class FoodCardFragment extends Fragment {
             new Exception().printStackTrace();
             return;
         }
-        Log.e("FoodFindDebug", "Fragment valid");
-        iv.setImageResource(iv.getContext().getResources().getIdentifier(text, "drawable", iv.getContext().getPackageName()));
+        Log.i("FoodFindDebug", "Fragment valid");
+        iview.setImageResource(iview.getContext().getResources().getIdentifier(text, "drawable", iview.getContext().getPackageName()));
+    }
+    TextView fdist;
+    public void setDistance(float distance)
+    {
+        if(v != null && isAdded())
+            if(distance < 1000)
+                fdist.setText((int)distance + "m");
+            else
+                fdist.setText((int)(distance / 1000) + "km");
     }
 
 
@@ -114,14 +126,17 @@ public class FoodCardFragment extends Fragment {
 
 
         v = inflater.inflate(R.layout.fragment_cardview, container, false);
-        fn = (TextView) v.findViewById(R.id.cardFoodName);
-        fd = (TextView) v.findViewById(R.id.cardFoodDescription);
-        rn = (TextView) v.findViewById(R.id.cardRestaurantName);
-        fp = (TextView) v.findViewById(R.id.cardFoodPrice);
-        iv = (ImageView)v.findViewById(R.id.cardPreviewImage);
-
+        fname = (TextView) v.findViewById(R.id.cardFoodName);
+        fdesc = (TextView) v.findViewById(R.id.cardFoodDescription);
+        rname = (TextView) v.findViewById(R.id.cardRestaurantName);
+        fpric = (TextView) v.findViewById(R.id.cardFoodPrice);
+        iview = (ImageView)v.findViewById(R.id.cardPreviewImage);
+        fdist = (TextView) v.findViewById(R.id.cardFoodDistance);
 
         setFromDish(dish);
+
+        CardView cv = (CardView)v.findViewById(R.id.card_view);
+        cv.setOnClickListener(this);
         return v;
     }
 
@@ -148,24 +163,18 @@ public class FoodCardFragment extends Fragment {
         //getActivity().findViewById()
     }
 
-
-
     @Override
     public void onDetach() {
         super.onDetach();
         mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
+    @Override
+    public void onClick(View v) {
+        Log.i("FoodFindDebug", "Touched " + dish.name);
+        new FoodInfo().show(MainActivity.m.getFragmentManager(), "FoodFindDebug");
+    }
+
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);

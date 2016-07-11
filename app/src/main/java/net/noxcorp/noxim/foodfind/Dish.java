@@ -22,10 +22,12 @@ public class Dish {
     public boolean isLunch;
     public boolean isDinner;
     public String  previewImage;
+    public double  latitude;
+    public double  longitude;
 
     public  Dish()
     {
-        this.name         = "FoodName";
+        this.name         = "DishInit";
         this.description  = "FoodDescription";
         this.restaurant   = "Restaurant";
         this.lactoseFree  = true;
@@ -37,9 +39,11 @@ public class Dish {
         this.isLunch      = true;
         this.isDinner     = true;
         this.previewImage = "FoodImage";
+        this.latitude     = 60.0;
+        this.longitude    = 24.0;
     }
 
-    public Dish(String name, String description, String restaurant, boolean lactoseFree, boolean glutenFree, boolean vegan, float priceInEuros, boolean isBreakfast, boolean isBrunch, boolean isLunch, boolean isDinner, String previewImage)
+    public Dish(String name, String description, String restaurant, boolean lactoseFree, boolean glutenFree, boolean vegan, float priceInEuros, boolean isBreakfast, boolean isBrunch, boolean isLunch, boolean isDinner, String previewImage, double latitude, double longitude)
     {
         this.name         = name;
         this.description  = description;
@@ -53,5 +57,7 @@ public class Dish {
         this.isLunch      = isLunch;
         this.isDinner     = isDinner;
         this.previewImage = previewImage;
+        this.latitude     = latitude;
+        this.longitude    = longitude;
     }
 }
