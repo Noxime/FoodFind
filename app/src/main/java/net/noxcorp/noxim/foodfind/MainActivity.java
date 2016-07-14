@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     public static double latestLatitude  = 60.0;
     public static double latestLongitude = 24.0;
     public static FoodCardFragment[] fragments;
+    public static Context c;
 
     private Dish[] loadDishes() {
         AssetManager am = getApplicationContext().getAssets();
@@ -145,6 +146,7 @@ public class MainActivity extends AppCompatActivity {
         }
         m = this;
         //new FilterFoods().show(getFragmentManager(), "FoodFindDebug");
+        c = getApplicationContext();
     }
 
     public static void filterDishes(boolean lactose, boolean gluten, boolean vegan)

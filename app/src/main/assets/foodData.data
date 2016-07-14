@@ -72,7 +72,7 @@
 		<propertySplitter>
 			true
 		<propertySplitter>
-			null
+			uv_checker_large
 		<propertySplitter>
             60.16897:24.93011
 <restaurantSplitter>
@@ -98,7 +98,7 @@
 		<propertySplitter>
 			true
 		<propertySplitter>
-			null
+			uv_checker_large
 		<propertySplitter>
             60.17041:24.93410
     <foodSplitter>
@@ -124,7 +124,7 @@
 		<propertySplitter>
 			true
 		<propertySplitter>
-			null
+			uv_checker_large
 		<propertySplitter>
             60.17041:24.93410
     <foodSplitter>
@@ -150,7 +150,7 @@
    		<propertySplitter>
    			true
    		<propertySplitter>
-   			null
+   			uv_checker_large
    		<propertySplitter>
                60.17041:24.93410
     <foodSplitter>
@@ -176,7 +176,7 @@
         <propertySplitter>
        	    true
         <propertySplitter>
-       	    null
+       	    uv_checker_large
         <propertySplitter>
             60.17041:24.93410
     <foodSplitter>
@@ -202,7 +202,7 @@
 		<propertySplitter>
 			true
 		<propertySplitter>
-			null
+			uv_checker_large
 		<propertySplitter>
             60.17041:24.93410
     <foodSplitter>
@@ -228,7 +228,7 @@
 		<propertySplitter>
 			true
 		<propertySplitter>
-			null
+			uv_checker_large
 		<propertySplitter>
             60.17041:24.93410
     <foodSplitter>

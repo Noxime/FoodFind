@@ -41,7 +41,7 @@ public class Utils {
                    Math.sin(dLng / 2.0) * Math.sin(dLng / 2.0);
         double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         double d = R * c;
-        Log.e("FoodFindDebug", "Distance calculated: lat1: " + lat1 + " lng1: " + lng1 + " lat2: " + lat2 + " lng2: " + lng2 + " distance: " + d);
+        Log.i("FoodFindDebug", "Distance calculated: lat1: " + lat1 + " lng1: " + lng1 + " lat2: " + lat2 + " lng2: " + lng2 + " distance: " + d);
         return d; // returns the distance in meter
     }
 

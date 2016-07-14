@@ -172,7 +172,7 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Log.i("FoodFindDebug", "Touched " + dish.name);
-        new FoodInfo().show(MainActivity.m.getFragmentManager(), "FoodFindDebug");
+        new FoodInfo().setDish(dish).show(MainActivity.m.getFragmentManager(), "FoodFindDebug");
     }
 
     public interface OnFragmentInteractionListener {
