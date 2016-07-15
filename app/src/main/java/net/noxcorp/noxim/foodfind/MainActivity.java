@@ -29,51 +29,29 @@ public class MainActivity extends AppCompatActivity {
     public static double latestLongitude = 24.0;
     public static FoodCardFragment[] fragments;
     public static Context c;
+    public static SyncedFile[] files;
 
     private Dish[] loadDishes() {
-        AssetManager am = getApplicationContext().getAssets();
-        String data = "";
-        try {
-            data = Utils.convertStreamToString(am.open("foodData.data"));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ArrayList<Dish> dishes = new ArrayList<>();
+        files = Utils.parseFileIndex(Utils.loadFile("FileIndex.txt"));
+        for(SyncedFile f : files)
+        {
+            if(f.type == SyncedFile.TYPE_RESTAURANT)
+            {
+                String[] names        = Utils.parseProperties("name", f.contents);
+                String[] ratings      = Utils.parseProperties("rating", f.contents);
+                String[] phonenumbers = Utils.parseProperties("phonenumber", f.contents);
+                String[] addresses    = Utils.parseProperties("address", f.contents);
+                String[] openhours    = Utils.parseProperties("openhours", f.contents);
+                String[] foods        = Utils.parseProperties("foods", f.contents);
 
-        ArrayList<Dish> d = new ArrayList<>();
 
-        String[] restaurants = data.trim().split("<restaurantSplitter>");
-        Log.i("FoodFindDebug", "found " + restaurants.length + " restaurants");
-        for (int i = 0; i < restaurants.length; i++) {
-            String[] foods = restaurants[i].trim().split("<foodSplitter>");
-            Log.i("FoodFindDebug", " found " + foods.length + " foods in " + restaurants[i]);
-            for (int j = 0; j < foods.length; j++) {
-                String[] properties = foods[j].trim().split("<propertySplitter>");
-                Log.i("FoodFindDebug", "  found " + properties.length + " properties in " + foods[j]);
-                if (properties.length < 13)
-                    break;
-
-                d.add(new Dish(properties[0].trim(),                      //Name
-                        properties[1].trim(),                             //Description
-                        properties[2].trim(),                             //Restaurant
-                        Boolean.parseBoolean(properties[3].trim()),       //Lactose
-                        Boolean.parseBoolean(properties[4].trim()),       //Gluten
-                        Boolean.parseBoolean(properties[5].trim()),       //Vegan
-                        Float.parseFloat(properties[6].trim()),           //Price
-                        Boolean.parseBoolean(properties[7].trim()),       //Breakfast
-                        Boolean.parseBoolean(properties[8].trim()),       //Brunch
-                        Boolean.parseBoolean(properties[9].trim()),       //Lunch
-                        Boolean.parseBoolean(properties[10].trim()),      //Dinner
-                        properties[11].trim(),                            //Image
-                        Double.parseDouble(properties[12].split(":")[0]), //Latitude
-                        Double.parseDouble(properties[12].split(":")[1])  //Longitude
-                        ));
 
             }
         }
 
-        Log.i("FoodFindDebug", "found " + d.size() + " dishes");
-        //d[0] = new Dish("Big Mac", "Iconic burger with no ketchup", "McDonalds", true, false, 4.10f, false, true, true, true, "bigmac_transparent");
-        return d.toArray(new Dish[d.size()]);
+
+        return dishes.toArray(new Dish[dishes.size()]);
     }
 
     static Dish[] dishes;

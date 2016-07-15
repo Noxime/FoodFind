@@ -1,10 +1,12 @@
 package net.noxcorp.noxim.foodfind;
 
+import android.content.res.AssetManager;
 import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 
 /**
  * Created by Noxim on 10-Jul-16.
@@ -23,6 +25,62 @@ public class Utils {
             e.printStackTrace();
         }
         return total.toString();
+    }
+
+    public static String loadFile(String name)
+    {
+        AssetManager am = MainActivity.c.getApplicationContext().getAssets();
+        String data = "";
+        try {
+            data = Utils.convertStreamToString(am.open(name));
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
+        return data;
+    }
+
+    public static SyncedFile[] parseFileIndex(String string)
+    {
+        ArrayList<SyncedFile> files = new ArrayList<>();
+        String[] items = string.split(">");
+        for(String i : items)
+        {
+            int type = 0;
+            if(i.split(":")[1] == "TYPE_DISH")
+            {
+                type = SyncedFile.TYPE_DISH;
+            }
+            else if(i.split(":")[1] == "TYPE_RESTAURANT")
+            {
+                type = SyncedFile.TYPE_RESTAURANT;
+            }
+            else
+            {
+                type = SyncedFile.TYPE_OTHER;
+            }
+            files.add(new SyncedFile(i.split(":")[0], type, loadFile(i.split(":")[0]), i.split(":")[2]));
+        }
+
+        return files.toArray(new SyncedFile[files.size()]);
+    }
+
+    public static String[] parseProperties(String property, String string)
+    {
+        ArrayList<String> result = new ArrayList<>();
+        String[] items = string.split(">");
+
+        for(String i : items)
+        {
+            if(i.split("=")[0] == property)
+            {
+                result.add(i.split("=")[1]);
+            }
+        }
+
+
+        return result.toArray(new String[result.size()]);
     }
 
     public static double toRad(double x)
