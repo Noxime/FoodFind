@@ -1,0 +1,319 @@
+>name=McDonald's Forum Pohjakerros
+>rating=3.0
+>phonenumber=040 717 0297
+>address=Mannerheimintie 20, Helsinki
+>coordinates=60.169550:24.937905
+>openhours=
+08.00-21.00:
+08.00-21.00:
+08.00-21.00:
+08.00-21.00:
+08.00-21.00:
+08.00-19.00:
+11.00-19.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Sokos
+>rating=3.0
+>phonenumber=040 866 7005
+>address=Asema-aukio 2, Helsinki
+>coordinates=60.170457:24.939370
+>openhours=
+07.00-05.00:
+07.00-05.00:
+07.00-05.00:
+07.00-05.00:
+07.00-05.00:
+08.00-05.00:
+08.00-05.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Forum Katutaso
+>rating=3.0
+>phonenumber=040 717 0258
+>address=Mannerheimintie 16, Helsinki
+>coordinates=60.168802:24.939652
+>openhours=
+08.00-00.00:
+08.00-00.00:
+08.00-05.00:
+08.00-05.00:
+08.00-05.00:
+08.00-05.00:
+08.00-00.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Asematunneli
+>rating=3.0
+>phonenumber=040 717 0252
+>address=Asema-aukio 1, Helsinki
+>coordinates=60.170653:24.940027
+>openhours=
+06.30-23.00:
+06.30-23.00:
+06.30-23.00:
+06.30-23.00:
+06.30-23.00:
+08.00-23.00:
+08.00-23.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Kamppi
+>rating=3.0
+>phonenumber=040 833 0043
+>address=Fredrikinkatu 46, Helsinki
+>coordinates=60.169015:24.930149
+>openhours=
+06.30-05.00:
+06.30-05.00:
+06.30-05.00:
+06.30-05.00:
+06.30-05.00:
+08.00-05.00:
+08.00-05.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Kluuvi
+>rating=3.0
+>phonenumber=040 717 0390
+>address=Kluuvikatu 7, Helsinki
+>coordinates=60.169614:24.947519
+>openhours=
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-00.00:
+10.00-00.00:
+11.00-22.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Hakaniemi
+>rating=3.0
+>phonenumber=050 305 6691
+>address=Siltasaarenkatu 12, Helsinki
+>coordinates=60.178811:24.949733
+>openhours=
+07.00-23.00:
+07.00-23.00:
+07.00-05.00:
+07.00-05.00:
+07.00-05.00:
+10.00-05.00:
+11.00-23.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Ruoholahti
+>rating=3.0
+>phonenumber=09 562 5523
+>address=Itämerenkatu 14, Helsinki
+>coordinates=60.163213:24.914853
+>openhours=
+08.00-23.00:
+08.00-23.00:
+08.00-05.00:
+08.00-05.00:
+08.00-05.00:
+09.00-05.00:
+10.00-23.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Teollisuuskatu
+>rating=3.0
+>phonenumber=040 778 5101
+>address=Teollisuuskatu 6, Helsinki
+>coordinates=60.190717:24.955640
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Töölö
+>rating=3.0
+>phonenumber=040 717 0571
+>address=Mannerheimintie 53, Helsinki
+>coordinates=60.189983:24.916443
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Meilahti
+>rating=3.0
+>phonenumber=040 717 0469
+>address=Paciuksenkatu 29, Helsinki
+>coordinates=60.195242:24.890686
+>openhours=
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+10.00-23.00:
+10.00-23.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Pitäjänmäki
+>rating=3.0
+>phonenumber=050 474 7095
+>address=Vanha Viertotie 29, Helsinki
+>coordinates=60.213467:24.879176
+>openhours=
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00:
+08.00-23.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Herttoniemi
+>rating=3.0
+>phonenumber=040 717 0324
+>address=Laivalahdenkatu 1, Helsinki
+>coordinates=60.193915:25.037033
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Pukinmäki
+>rating=3.0
+>phonenumber=040 848 2902
+>address=Pukinmäenkaari 55, Helsinki
+>coordinates=60.242850:24.979944
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Niittykumpu
+>rating=3.0
+>phonenumber=09 452 2452
+>address=Niittymaantie 6, Espoo
+>coordinates=60.171065:24.778614
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Itäkeskus
+>rating=3.0
+>phonenumber=040 717 0338
+>address=Itäkatu 1-5 A 29, Helsinki
+>coordinates=60.212632:25.085417
+>openhours=
+08.00-21.00:
+08.00-21.00:
+07.00-21.00:
+08.00-21.00:
+08.00-21.00:
+08.00-19.00:
+11.00-19.00
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Kaivoksela
+>rating=3.0
+>phonenumber=456 792 221
+>address=Louhijantie 1, Vantaa
+>coordinates=60.263941:24.872516
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Tammisto
+>rating=3.0
+>phonenumber=040 717 0247
+>address=Kirkkotie 4, Vantaa
+>coordinates=60.271558:24.975292
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Kauniastentie
+>rating=3.0
+>phonenumber=09 586 4560
+>address=Palomiehentie 2, Espoo
+>coordinates=60.208805:24.743012
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
+
+>name=McDonald's Vuosaari
+>rating=3.0
+>phonenumber=040 098 5371
+>address=Kaivonkatsojantie 1 a, Helsinki
+>coordinates=60.205546:25.135302
+>openhours=
+24h:
+24h:
+24h:
+24h:
+24h:
+24h:
+24h
+>foods=
+BBQ Smokehouse Crispy Chicken McWrap.txt:
