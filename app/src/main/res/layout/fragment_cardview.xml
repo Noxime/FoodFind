@@ -64,14 +64,14 @@
                 />
 
             <TextView
-                android:paddingLeft="160dp"
-                android:paddingRight="12dp"
-                android:paddingTop="8dp"
+                android:padding="12dp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="FoodDescription"
-                android:id="@+id/cardFoodDescription"
-                android:layout_below="@+id/cardRestaurantName"
+                android:text="3.5 \u2605"
+                android:id="@+id/cardFoodRating"
+                android:layout_toRightOf="@id/cardPreviewImage"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentEnd="true"
                 />
 
             <TextView

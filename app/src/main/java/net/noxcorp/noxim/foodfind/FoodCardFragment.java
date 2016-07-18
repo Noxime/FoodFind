@@ -27,31 +27,28 @@ import java.text.NumberFormat;
 public class FoodCardFragment extends Fragment implements View.OnClickListener {
 
     private Dish dish = new Dish();
-    
+
     private OnFragmentInteractionListener mListener;
 
     public FoodCardFragment() {
         setFromDish(dish);
     }
 
-    public void setDish(Dish dish)
-    {
+    public void setDish(Dish dish) {
         this.dish = dish;
         //setFromDish(dish);
     }
 
-    private void setFromDish(Dish dish)
-    {
+    private void setFromDish(Dish dish) {
         setName(dish.name);
-        setDescription(dish.description);
+        setRating(dish.rating);
         setRestaurant(dish.restaurant);
         setPrice(dish.priceInEuros);
         setImage(dish.previewImage);
-        setDistance((float)Utils.distance(dish.latitude, dish.longitude, MainActivity.latestLatitude, MainActivity.latestLongitude));
+        setDistance((float) Utils.distance(dish.latitude, dish.longitude, MainActivity.latestLatitude, MainActivity.latestLongitude));
     }
 
-    public void updateDistance()
-    {
+    public void updateDistance() {
         setFromDish(dish);
     }
 
@@ -61,31 +58,35 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
         fragment.setArguments(args);
         return fragment;
     }
+
     TextView fname;
-    public void setName(String text)
-    {
-        if(v != null && isAdded())
+    public void setName(String text) {
+        if (v != null && isAdded())
             fname.setText(text);
     }
+
     TextView rname;
-    public void setRestaurant(String text)
-    {
-        if(v != null && isAdded())
+    public void setRestaurant(String text) {
+        if (v != null && isAdded())
             rname.setText(text);
     }
-    TextView fdesc;
-    public void setDescription(String text){
-        if(v != null && isAdded())
-            fdesc.setText(text);
-    }
+
     TextView fpric;
-    public void setPrice(float price)
-    {
+    public void setPrice(float price) {
         NumberFormat formatter = new DecimalFormat("###,###,###.##");
         String text = formatter.format(price) + "\u20ac";
-        if(v != null && isAdded())
+        if (v != null && isAdded())
             fpric.setText(text);
     }
+
+    TextView frati;
+    public void setRating(float rating)
+    {
+        String text = rating + "\u2605";
+        if(v != null && isAdded())
+            frati.setText(text);
+    }
+
     ImageView iview;
     public void setImage(String text)
     {
@@ -98,6 +99,7 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
         Log.i("FoodFindDebug", "Fragment valid");
         iview.setImageResource(iview.getContext().getResources().getIdentifier(text, "drawable", iview.getContext().getPackageName()));
     }
+
     TextView fdist;
     public void setDistance(float distance)
     {
@@ -127,11 +129,11 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
 
         v = inflater.inflate(R.layout.fragment_cardview, container, false);
         fname = (TextView) v.findViewById(R.id.cardFoodName);
-        fdesc = (TextView) v.findViewById(R.id.cardFoodDescription);
         rname = (TextView) v.findViewById(R.id.cardRestaurantName);
         fpric = (TextView) v.findViewById(R.id.cardFoodPrice);
         iview = (ImageView)v.findViewById(R.id.cardPreviewImage);
         fdist = (TextView) v.findViewById(R.id.cardFoodDistance);
+        frati = (TextView) v.findViewById(R.id.cardFoodRating);
 
         setFromDish(dish);
 

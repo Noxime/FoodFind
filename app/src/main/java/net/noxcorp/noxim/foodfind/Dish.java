@@ -19,6 +19,7 @@ public class Dish {
     public String  description;
     public String  ingredients;
     public String  restaurant;
+    public String  phonenumber;
     public float   priceInEuros;
     public float   rating;
     public int     hasLactose;
@@ -45,6 +46,7 @@ public class Dish {
                 String description,
                 String ingredients,
                 String restaurant,
+                String phonenumber,
                 float priceInEuros,
                 float rating,
                 int hasLactose,
@@ -66,6 +68,7 @@ public class Dish {
         this.description    = description;
         this.ingredients    = ingredients;
         this.restaurant     = restaurant;
+        this.phonenumber    = phonenumber;
         this.priceInEuros   = priceInEuros;
         this.rating         = rating;
         this.hasLactose     = hasLactose;

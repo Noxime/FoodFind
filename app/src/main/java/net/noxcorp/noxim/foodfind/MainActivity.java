@@ -71,12 +71,12 @@ public class MainActivity extends AppCompatActivity {
                                 int    lactose     = Integer.parseInt(Utils.parseProperties("lactose",     searchFile.contents)[0].trim());
                                 int    soy         = Integer.parseInt(Utils.parseProperties("soy",         searchFile.contents)[0].trim());
 
-                                dishes.add(new Dish(name, description, ingredients, names[restaurantIndex],
+                                dishes.add(new Dish(name, description, ingredients, names[restaurantIndex].trim(), phonenumbers[restaurantIndex].trim(),
                                                     price, rating, lactose, gluten, vegan, egg, milkprotein,
                                                     nuts, molluscs, crustaceans, fish, soy, image,
-                                                    addresses[restaurantIndex],
-                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[0]),
-                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[1])));
+                                                    addresses[restaurantIndex].trim(),
+                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[0].trim()),
+                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[1].trim())));
 
                             }
                         }
