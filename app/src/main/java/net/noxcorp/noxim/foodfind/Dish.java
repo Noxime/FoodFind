@@ -10,54 +10,78 @@ import android.graphics.BitmapFactory;
  */
 public class Dish {
 
+    public static final int NO    = -1;
+    public static final int MAYBE =  0;
+    public static final int YES   =  1;
+
+
     public String  name;
     public String  description;
+    public String  ingredients;
     public String  restaurant;
-    public boolean lactoseFree;
-    public boolean glutenFree;
-    public boolean isVegan;
     public float   priceInEuros;
-    public boolean isBreakfast;
-    public boolean isBrunch;
-    public boolean isLunch;
-    public boolean isDinner;
+    public float   rating;
+    public int     hasLactose;
+    public int     hasGluten;
+    public int     isVegan;
+    public int     hasEgg;
+    public int     hasMilkProtein;
+    public int     hasNuts;
+    public int     hasMolluscs;
+    public int     hasCrustaceans;
+    public int     hasFish;
+    public int     hasSoy;
     public String  previewImage;
+    public String  address;
     public double  latitude;
     public double  longitude;
 
-    public  Dish()
+    public Dish()
     {
-        this.name         = "DishInit";
-        this.description  = "FoodDescription";
-        this.restaurant   = "Restaurant";
-        this.lactoseFree  = true;
-        this.glutenFree   = true;
-        this.isVegan      = true;
-        this.priceInEuros = 13.37f;
-        this.isBreakfast  = true;
-        this.isBrunch     = true;
-        this.isLunch      = true;
-        this.isDinner     = true;
-        this.previewImage = "FoodImage";
-        this.latitude     = 60.0;
-        this.longitude    = 24.0;
+
     }
 
-    public Dish(String name, String description, String restaurant, boolean lactoseFree, boolean glutenFree, boolean vegan, float priceInEuros, boolean isBreakfast, boolean isBrunch, boolean isLunch, boolean isDinner, String previewImage, double latitude, double longitude)
-    {
-        this.name         = name;
-        this.description  = description;
-        this.restaurant   = restaurant;
-        this.lactoseFree  = lactoseFree;
-        this.glutenFree   = glutenFree;
-        this.isVegan      = vegan;
-        this.priceInEuros = priceInEuros;
-        this.isBreakfast  = isBreakfast;
-        this.isBrunch     = isBrunch;
-        this.isLunch      = isLunch;
-        this.isDinner     = isDinner;
-        this.previewImage = previewImage;
-        this.latitude     = latitude;
-        this.longitude    = longitude;
+    public Dish(String name,
+                String description,
+                String ingredients,
+                String restaurant,
+                float priceInEuros,
+                float rating,
+                int hasLactose,
+                int hasGluten,
+                int isVegan,
+                int hasEgg,
+                int hasMilkProtein,
+                int hasNuts,
+                int hasMolluscs,
+                int hasCrustaceans,
+                int hasFish,
+                int hasSoy,
+                String previewImage,
+                String address,
+                double latitude,
+                double longitude) {
+
+        this.name           = name;
+        this.description    = description;
+        this.ingredients    = ingredients;
+        this.restaurant     = restaurant;
+        this.priceInEuros   = priceInEuros;
+        this.rating         = rating;
+        this.hasLactose     = hasLactose;
+        this.hasGluten      = hasGluten;
+        this.isVegan        = isVegan;
+        this.hasEgg         = hasEgg;
+        this.hasMilkProtein = hasMilkProtein;
+        this.hasNuts        = hasNuts;
+        this.hasMolluscs    = hasMolluscs;
+        this.hasCrustaceans = hasCrustaceans;
+        this.hasFish        = hasFish;
+        this.hasSoy         = hasSoy;
+        this.previewImage   = previewImage;
+        this.address        = address;
+        this.latitude       = latitude;
+        this.longitude      = longitude;
     }
+
 }

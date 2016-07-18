@@ -6,7 +6,7 @@ package net.noxcorp.noxim.foodfind;
 public class SyncedFile {
 
     public static final int TYPE_RESTAURANT = 0;
-    public static final int TYPE_DISH       = 1;
+    public static final int TYPE_FOOD       = 1;
     public static final int TYPE_OTHER      = 2;
 
     public String  filename;

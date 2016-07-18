@@ -4,23 +4,18 @@ import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
-import android.content.res.AssetManager;
-import android.content.res.Resources;
-import android.content.res.XmlResourceParser;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.util.Xml;
 import android.widget.LinearLayout;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.io.StringWriter;
+import com.google.android.gms.maps.model.LatLng;
+
 import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
@@ -34,19 +29,61 @@ public class MainActivity extends AppCompatActivity {
     private Dish[] loadDishes() {
         ArrayList<Dish> dishes = new ArrayList<>();
         files = Utils.parseFileIndex(Utils.loadFile("FileIndex.txt"));
+
         for(SyncedFile f : files)
         {
-            if(f.type == SyncedFile.TYPE_RESTAURANT)
-            {
-                String[] names        = Utils.parseProperties("name", f.contents);
-                String[] ratings      = Utils.parseProperties("rating", f.contents);
+            if(f.type == SyncedFile.TYPE_RESTAURANT) {
+                String[] names        = Utils.parseProperties("name",        f.contents);
+                String[] ratings      = Utils.parseProperties("rating",      f.contents);
                 String[] phonenumbers = Utils.parseProperties("phonenumber", f.contents);
-                String[] addresses    = Utils.parseProperties("address", f.contents);
-                String[] openhours    = Utils.parseProperties("openhours", f.contents);
-                String[] foods        = Utils.parseProperties("foods", f.contents);
+                String[] addresses    = Utils.parseProperties("address",     f.contents);
+                String[] coordinates  = Utils.parseProperties("coordinates", f.contents);
+                String[] openhours    = Utils.parseProperties("openhours",   f.contents);
+                String[] foods        = Utils.parseProperties("foods",       f.contents);
+
+                int restaurantIndex = 0;
+
+                for(String foodList : foods) {
+
+                    String[] parsedFoods = foodList.split(":");
+
+                    for (String foodFilename : parsedFoods) {
+
+                        for (SyncedFile searchFile : files) {
+
+                            if (foodFilename.trim().equalsIgnoreCase(searchFile.filename.trim())) {
 
 
+                                String name        =                  Utils.parseProperties("name",        searchFile.contents)[0].trim();
+                                String description =                  Utils.parseProperties("description", searchFile.contents)[0].trim();
+                                String ingredients =                  Utils.parseProperties("ingredients", searchFile.contents)[0].trim();
+                                String image       =                  Utils.parseProperties("image",       searchFile.contents)[0].trim();
+                                float  price       = Float.parseFloat(Utils.parseProperties("price",       searchFile.contents)[0].trim());
+                                float  rating      = Float.parseFloat(Utils.parseProperties("rating",      searchFile.contents)[0].trim());
+                                int    vegan       = Integer.parseInt(Utils.parseProperties("vegan",       searchFile.contents)[0].trim());
+                                int    egg         = Integer.parseInt(Utils.parseProperties("egg",         searchFile.contents)[0].trim());
+                                int    gluten      = Integer.parseInt(Utils.parseProperties("gluten",      searchFile.contents)[0].trim());
+                                int    milkprotein = Integer.parseInt(Utils.parseProperties("milkprotein", searchFile.contents)[0].trim());
+                                int    nuts        = Integer.parseInt(Utils.parseProperties("nuts",        searchFile.contents)[0].trim());
+                                int    molluscs    = Integer.parseInt(Utils.parseProperties("molluscs",    searchFile.contents)[0].trim());
+                                int    crustaceans = Integer.parseInt(Utils.parseProperties("crustaceans", searchFile.contents)[0].trim());
+                                int    fish        = Integer.parseInt(Utils.parseProperties("fish",        searchFile.contents)[0].trim());
+                                int    lactose     = Integer.parseInt(Utils.parseProperties("lactose",     searchFile.contents)[0].trim());
+                                int    soy         = Integer.parseInt(Utils.parseProperties("soy",         searchFile.contents)[0].trim());
 
+                                dishes.add(new Dish(name, description, ingredients, names[restaurantIndex],
+                                                    price, rating, lactose, gluten, vegan, egg, milkprotein,
+                                                    nuts, molluscs, crustaceans, fish, soy, image,
+                                                    addresses[restaurantIndex],
+                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[0]),
+                                                    Double.parseDouble(coordinates[restaurantIndex].split(":")[1])));
+
+                            }
+                        }
+                    }
+
+                    restaurantIndex++;
+                }
             }
         }
 
@@ -62,7 +99,9 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        dishes = loadDishes();
+        c = getApplicationContext();
+
+
         // Check that the activity is using the layout version with
         // the fragment_container FrameLayout
         LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
@@ -70,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
         LocationListener locationListener = new LocationListener() {
             public void onLocationChanged(Location location) {
                 // Called when a new location is found by the network location provider.
-                Log.i("FoodFindDebug", "lat: " + location.getLatitude() + " long: " + location.getLongitude());
+
                 latestLatitude  = location.getLatitude();
                 latestLongitude = location.getLongitude();
                 for(int i = 0; i < fragments.length; i++)
@@ -96,6 +135,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
+
+        dishes = loadDishes();
 
         if (findViewById(R.id.fragmentList) != null) {
 
@@ -123,8 +164,6 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         m = this;
-        //new FilterFoods().show(getFragmentManager(), "FoodFindDebug");
-        c = getApplicationContext();
     }
 
     public static void filterDishes(boolean lactose, boolean gluten, boolean vegan)
@@ -134,13 +173,13 @@ public class MainActivity extends AppCompatActivity {
         for(int i = 0; i < dishes.length; i++)
         {
             if(lactose)
-                if(!dishes[i].lactoseFree)
+                if(dishes[i].hasLactose == Dish.NO)
                     continue;
             if(gluten)
-                if(!dishes[i].glutenFree)
+                if(dishes[i].hasGluten == Dish.NO)
                     continue;
             if(vegan)
-                if(!dishes[i].isVegan)
+                if(dishes[i].isVegan != Dish.YES)
                     continue;
             filteredDishes.add(dishes[i]);
         }

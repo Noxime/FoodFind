@@ -1,12 +1,20 @@
 package net.noxcorp.noxim.foodfind;
 
 import android.content.res.AssetManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.util.Log;
+
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Created by Noxim on 10-Jul-16.
@@ -14,7 +22,14 @@ import java.util.ArrayList;
 public class Utils {
 
     public static String convertStreamToString(java.io.InputStream is) {
-        BufferedReader r = new BufferedReader(new InputStreamReader(is));
+        BufferedReader r = null;
+        try {
+            r = new BufferedReader(new InputStreamReader(is, "UTF-8"));
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+            System.exit(-1);
+        }
+
         StringBuilder total = new StringBuilder();
         String line;
         try {
@@ -27,17 +42,19 @@ public class Utils {
         return total.toString();
     }
 
+    static int LOAD_COUNT = 1;
     public static String loadFile(String name)
     {
         AssetManager am = MainActivity.c.getApplicationContext().getAssets();
         String data = "";
+
         try {
             data = Utils.convertStreamToString(am.open(name));
         } catch (IOException e) {
             e.printStackTrace();
             System.exit(-1);
         }
-
+        Log.e("FoodFindDebug", LOAD_COUNT++ + " load event");
         return data;
     }
 
@@ -47,12 +64,15 @@ public class Utils {
         String[] items = string.split(">");
         for(String i : items)
         {
-            int type = 0;
-            if(i.split(":")[1] == "TYPE_DISH")
+            if(!i.contains(":"))
+                continue;
+
+            int type;
+            if(i.split(":")[1].equalsIgnoreCase("TYPE_FOOD"))
             {
-                type = SyncedFile.TYPE_DISH;
+                type = SyncedFile.TYPE_FOOD;
             }
-            else if(i.split(":")[1] == "TYPE_RESTAURANT")
+            else if(i.split(":")[1].equalsIgnoreCase("TYPE_RESTAURANT"))
             {
                 type = SyncedFile.TYPE_RESTAURANT;
             }
@@ -66,6 +86,51 @@ public class Utils {
         return files.toArray(new SyncedFile[files.size()]);
     }
 
+    public static boolean contains(String[] a, String s)
+    {
+        for(String v : a)
+        {
+            if(v.equalsIgnoreCase(s))
+                return true;
+        }
+
+        return false;
+    }
+
+    public static LatLng getLocationFromAddress(String strAddress) {
+
+        Geocoder coder = new Geocoder(MainActivity.c);
+        List<Address> address;
+        LatLng p1 = null;
+
+        try {
+            address = coder.getFromLocationName(strAddress, 5);
+            if (address == null) {
+                Log.e("FoodFindDebug", "Didn't find a location for" + strAddress);
+                return new LatLng(0, 0);
+            }
+            Address location = null;
+
+            try {
+                location = address.get(0);
+            }
+            catch (IndexOutOfBoundsException e)
+            {
+                System.err.println("No addresses found");
+            }
+            location.getLatitude();
+            location.getLongitude();
+
+            p1 = new LatLng(location.getLatitude(), location.getLongitude() );
+
+        } catch (Exception ex) {
+
+            ex.printStackTrace();
+        }
+
+        return p1;
+    }
+
     public static String[] parseProperties(String property, String string)
     {
         ArrayList<String> result = new ArrayList<>();
@@ -73,7 +138,7 @@ public class Utils {
 
         for(String i : items)
         {
-            if(i.split("=")[0] == property)
+            if(i.split("=")[0].equalsIgnoreCase(property))
             {
                 result.add(i.split("=")[1]);
             }
