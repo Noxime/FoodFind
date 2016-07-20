@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -20,6 +21,36 @@ import java.util.List;
  * Created by Noxim on 10-Jul-16.
  */
 public class Utils {
+
+    public static ArrayList<Dish> sortByDistance(ArrayList<Dish> values, double latitude, double longitude)
+    {
+        ArrayList<Dish> result = new ArrayList<>();
+
+        while(values.size() > 0)
+        {
+            float min = Float.MAX_VALUE;
+            int index = 0;
+            int iteration = 0;
+
+            for(Dish currentDish : values)
+            {
+                float h = (float)distance(latitude, longitude, currentDish.latitude, currentDish.longitude);
+
+                if(h < min)
+                {
+                    min = h;
+                    index = iteration;
+                }
+
+                iteration++;
+            }
+
+            result.add(values.get(index));
+            values.remove(index);
+        }
+
+        return result;
+    }
 
     public static String convertStreamToString(java.io.InputStream is) {
         BufferedReader r = null;
@@ -54,7 +85,7 @@ public class Utils {
             e.printStackTrace();
             System.exit(-1);
         }
-        Log.e("FoodFindDebug", LOAD_COUNT++ + " load event");
+        Log.d("FoodFindDebug", LOAD_COUNT++ + " load event");
         return data;
     }
 

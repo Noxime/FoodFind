@@ -27,6 +27,7 @@ public class FoodInfo extends DialogFragment {
     private TextView  viewName;
     private TextView  viewDesc;
     private TextView  viewRest;
+    private TextView  viewRati;
     private ImageView viewImge;
 
     public FoodInfo setDish(Dish d)
@@ -35,11 +36,24 @@ public class FoodInfo extends DialogFragment {
         return this;
     }
 
+    private String copyCharacter(char c, int count)
+    {
+        String result = "";
+
+        for(int i = 0; i < count; i++)
+        {
+            result += c;
+        }
+
+        return result;
+    }
+
     private void updateDish()
     {
         viewName.setText(dish.name);
         viewRest.setText(dish.restaurant);
         viewDesc.setText(dish.description);
+        viewRati.setText(copyCharacter('★', (int) Math.ceil(dish.rating)));
         viewImge.setImageResource(v.getContext().getResources().getIdentifier(dish.previewImage, "drawable", v.getContext().getPackageName()));
     }
     /*
@@ -89,6 +103,7 @@ public class FoodInfo extends DialogFragment {
         viewName = (TextView) v.findViewById(R.id.food_info_name);
         viewRest = (TextView) v.findViewById(R.id.food_info_restaurant);
         viewDesc = (TextView) v.findViewById(R.id.food_info_description);
+        viewRati = (TextView) v.findViewById(R.id.food_info_rating);
         viewImge = (ImageView)v.findViewById(R.id.food_info_image);
 
         updateDish();

@@ -17,6 +17,7 @@ import android.widget.LinearLayout;
 import com.google.android.gms.maps.model.LatLng;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -26,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
     public static Context c;
     public static SyncedFile[] files;
 
-    private Dish[] loadDishes() {
+    private ArrayList<Dish> loadDishes() {
         ArrayList<Dish> dishes = new ArrayList<>();
         files = Utils.parseFileIndex(Utils.loadFile("FileIndex.txt"));
 
@@ -87,11 +88,11 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-
-        return dishes.toArray(new Dish[dishes.size()]);
+        dishes = Utils.sortByDistance(dishes, latestLatitude, latestLongitude);
+        return dishes;
     }
 
-    static Dish[] dishes;
+    static ArrayList<Dish> dishes;
     static MainActivity m;
 
     @Override
@@ -116,6 +117,10 @@ public class MainActivity extends AppCompatActivity {
                 {
                     fragments[i].updateDistance();
                 }
+
+                dishes = Utils.sortByDistance(dishes, latestLatitude, latestLongitude);
+
+
             }
 
             public void onStatusChanged(String provider, int status, Bundle extras) {
@@ -147,18 +152,18 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            fragments = new FoodCardFragment[dishes.length];
+            fragments = new FoodCardFragment[dishes.size()];
 
-            for (int i = 0; i < dishes.length; i++) {
+            for (int i = 0; i < dishes.size(); i++) {
                 // Create a new Fragment to be placed in the activity layout
                 fragments[i] = new FoodCardFragment();
-                fragments[i].setDish(dishes[i]);
+                fragments[i].setDish(dishes.get(i));
                 // In case this activity was started with special instructions from an
                 // Intent, pass the Intent's extras to the fragment as arguments
                 fragments[i].setArguments(getIntent().getExtras());
 
                 // Add the fragment to the 'fragment_container' FrameLayout
-                getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], dishes[i].name + " " + dishes[i].restaurant).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], dishes.get(i).name + " " + dishes.get(i).restaurant).commit();
                 //getSupportFragmentManager().beginTransaction().attach(fragments[i]);
                 //((LinearLayout)this.findViewById(R.id.fragmentList));
             }
@@ -166,38 +171,50 @@ public class MainActivity extends AppCompatActivity {
         m = this;
     }
 
-    public static void filterDishes(boolean lactose, boolean gluten, boolean vegan)
+    public static void updateFragments(ArrayList<Dish> newDishes)
     {
+        newDishes = Utils.sortByDistance(newDishes, latestLatitude, latestLongitude);
+
         ((LinearLayout)m.findViewById(R.id.fragmentList)).removeAllViews();
-        ArrayList<Dish> filteredDishes = new ArrayList<>();
-        for(int i = 0; i < dishes.length; i++)
-        {
-            if(lactose)
-                if(dishes[i].hasLactose == Dish.NO)
-                    continue;
-            if(gluten)
-                if(dishes[i].hasGluten == Dish.NO)
-                    continue;
-            if(vegan)
-                if(dishes[i].isVegan != Dish.YES)
-                    continue;
-            filteredDishes.add(dishes[i]);
-        }
 
-        fragments = new FoodCardFragment[filteredDishes.size()];
+        fragments = new FoodCardFragment[newDishes.size()];
 
-        for (int i = 0; i < filteredDishes.size(); i++) {
+        for (int i = 0; i < newDishes.size(); i++) {
             // Create a new Fragment to be placed in the activity layout
             fragments[i] = new FoodCardFragment();
-            fragments[i].setDish(filteredDishes.get(i));
+            fragments[i].setDish(newDishes.get(i));
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
             fragments[i].setArguments(m.getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            m.getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], filteredDishes.get(i).name + " " + filteredDishes.get(i).restaurant).commit();
+            m.getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], newDishes.get(i).name + " " + newDishes.get(i).restaurant).commit();
             //getSupportFragmentManager().beginTransaction().attach(fragments[i]);
             //((LinearLayout)this.findViewById(R.id.fragmentList));
         }
+    }
+
+    public static void filterDishes(boolean lactose, boolean gluten, boolean vegan)
+    {
+        //TODO: Add more filters
+        ArrayList<Dish> filteredDishes = new ArrayList<>();
+
+        for(Dish currentDish : dishes)
+        {
+            if(vegan)
+                if(currentDish.isVegan == Dish.NO)
+                    continue;
+            if(gluten)
+                if(currentDish.hasGluten != Dish.NO)
+                    continue;
+            if(lactose)
+                if(currentDish.hasLactose != Dish.NO)
+                    continue;
+
+            filteredDishes.add(currentDish);
+        }
+
+        updateFragments(filteredDishes);
+
     }
 }

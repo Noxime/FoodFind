@@ -13,6 +13,15 @@
         android:id="@+id/food_info_image"
         android:layout_alignParentLeft="true"
         />
+    
+    <TextView
+        android:padding="2dp"
+        android:textSize="38dp"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/food_info_image"
+        android:id="@+id/food_info_rating"
+        android:text="\u2605\u2605\u2605\u2605\u2605"/>
 
 
     <TextView
