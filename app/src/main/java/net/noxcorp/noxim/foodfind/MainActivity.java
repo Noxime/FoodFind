@@ -1,31 +1,34 @@
 package net.noxcorp.noxim.foodfind;
 
 import android.Manifest;
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.content.pm.PermissionInfo;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.SystemClock;
+import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.LinearLayout;
 
-import com.google.android.gms.maps.model.LatLng;
-
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.logging.LogRecord;
 
 public class MainActivity extends AppCompatActivity {
 
     public static double latestLatitude  = 60.0;
     public static double latestLongitude = 24.0;
     public static FoodCardFragment[] fragments;
-    public static Context c;
+    public static Context applicationContext;
     public static SyncedFile[] files;
+    static ArrayList<Dish> shownDishes;
+    public static ArrayList<Dish> allLoadedDishes;
+    public static MainActivity mainActivity;
+    //public static boolean reloadFragments = false;
 
     private ArrayList<Dish> loadDishes() {
         ArrayList<Dish> dishes = new ArrayList<>();
@@ -88,19 +91,17 @@ public class MainActivity extends AppCompatActivity {
             }
         }
 
-        dishes = Utils.sortByDistance(dishes, latestLatitude, latestLongitude);
+        dishes = Utils.sortByScore(dishes);
         return dishes;
     }
 
-    static ArrayList<Dish> dishes;
-    static MainActivity m;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        c = getApplicationContext();
+        applicationContext = getApplicationContext();
 
 
         // Check that the activity is using the layout version with
@@ -118,8 +119,9 @@ public class MainActivity extends AppCompatActivity {
                     fragments[i].updateDistance();
                 }
 
-                dishes = Utils.sortByDistance(dishes, latestLatitude, latestLongitude);
+                updateFragments(shownDishes);
 
+                Log.i("FoodFindDebug", "" + allLoadedDishes.size());
 
             }
 
@@ -141,7 +143,8 @@ public class MainActivity extends AppCompatActivity {
         }
         locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, locationListener);
 
-        dishes = loadDishes();
+        allLoadedDishes = loadDishes();
+        shownDishes = (ArrayList<Dish>) allLoadedDishes.clone();
 
         if (findViewById(R.id.fragmentList) != null) {
 
@@ -152,69 +155,123 @@ public class MainActivity extends AppCompatActivity {
                 return;
             }
 
-            fragments = new FoodCardFragment[dishes.size()];
+            fragments = new FoodCardFragment[shownDishes.size()];
 
-            for (int i = 0; i < dishes.size(); i++) {
+            for (int i = 0; i < shownDishes.size(); i++) {
                 // Create a new Fragment to be placed in the activity layout
                 fragments[i] = new FoodCardFragment();
-                fragments[i].setDish(dishes.get(i));
+                fragments[i].setDish(shownDishes.get(i));
                 // In case this activity was started with special instructions from an
                 // Intent, pass the Intent's extras to the fragment as arguments
                 fragments[i].setArguments(getIntent().getExtras());
 
                 // Add the fragment to the 'fragment_container' FrameLayout
-                getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], dishes.get(i).name + " " + dishes.get(i).restaurant).commit();
+                getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], shownDishes.get(i).name + " " + shownDishes.get(i).restaurant).commit();
                 //getSupportFragmentManager().beginTransaction().attach(fragments[i]);
                 //((LinearLayout)this.findViewById(R.id.fragmentList));
             }
         }
-        m = this;
+        mainActivity = this;
+
+        FilterFoods.readSettings();
+
+        /*
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+
+                updateFragments(shownDishes);
+                Log.i("FoodFindDebug", "" + shownDishes.size());
+                handler.postDelayed(this, 500);
+            }
+        });
+        */
     }
 
     public static void updateFragments(ArrayList<Dish> newDishes)
     {
-        newDishes = Utils.sortByDistance(newDishes, latestLatitude, latestLongitude);
 
-        ((LinearLayout)m.findViewById(R.id.fragmentList)).removeAllViews();
+        newDishes = Utils.sortByScore(newDishes);
+
+        shownDishes = (ArrayList<Dish>) newDishes.clone();
+
+        ((LinearLayout) mainActivity.findViewById(R.id.fragmentList)).removeAllViews();
 
         fragments = new FoodCardFragment[newDishes.size()];
 
         for (int i = 0; i < newDishes.size(); i++) {
             // Create a new Fragment to be placed in the activity layout
             fragments[i] = new FoodCardFragment();
+            fragments[i].setArguments(mainActivity.getIntent().getExtras());
+
+            mainActivity.getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], newDishes.get(i).name + " " + newDishes.get(i).restaurant).commit();
+            mainActivity.getSupportFragmentManager().executePendingTransactions();
+
             fragments[i].setDish(newDishes.get(i));
             // In case this activity was started with special instructions from an
             // Intent, pass the Intent's extras to the fragment as arguments
-            fragments[i].setArguments(m.getIntent().getExtras());
 
             // Add the fragment to the 'fragment_container' FrameLayout
-            m.getSupportFragmentManager().beginTransaction().add(R.id.fragmentList, fragments[i], newDishes.get(i).name + " " + newDishes.get(i).restaurant).commit();
             //getSupportFragmentManager().beginTransaction().attach(fragments[i]);
             //((LinearLayout)this.findViewById(R.id.fragmentList));
         }
     }
 
-    public static void filterDishes(boolean lactose, boolean gluten, boolean vegan)
+    public static void filterDishes(boolean veganSelected, boolean eggSelected, boolean glutenSelected, boolean milkproteinSelected, boolean nutsSelected,
+                                    boolean molluscsSelected, boolean crustaceansSelected, boolean fishSelected, boolean lactoseSelected, boolean soySelected)
     {
         //TODO: Add more filters
-        ArrayList<Dish> filteredDishes = new ArrayList<>();
+        shownDishes = new ArrayList<>();
 
-        for(Dish currentDish : dishes)
+        for(Dish currentDish : allLoadedDishes)
         {
-            if(vegan)
-                if(currentDish.isVegan == Dish.NO)
+            if(veganSelected)
+                if(currentDish.isVegan        == Dish.NO)
                     continue;
-            if(gluten)
-                if(currentDish.hasGluten != Dish.NO)
+            if(glutenSelected)
+                if(currentDish.hasGluten      != Dish.NO)
                     continue;
-            if(lactose)
-                if(currentDish.hasLactose != Dish.NO)
+            if(lactoseSelected)
+                if(currentDish.hasLactose     != Dish.NO)
+                    continue;
+            if(eggSelected)
+                if(currentDish.hasEgg         != Dish.NO)
+                    continue;
+            if(milkproteinSelected)
+                if(currentDish.hasMilkProtein != Dish.NO)
+                    continue;
+            if(nutsSelected)
+                if(currentDish.hasNuts        != Dish.NO)
+                    continue;
+            if(molluscsSelected)
+                if(currentDish.hasMolluscs    != Dish.NO)
+                    continue;
+            if(crustaceansSelected)
+                if(currentDish.hasCrustaceans != Dish.NO)
+                    continue;
+            if(fishSelected)
+                if(currentDish.hasFish        != Dish.NO)
+                    continue;
+            if(soySelected)
+                if(currentDish.hasSoy         != Dish.NO)
                     continue;
 
-            filteredDishes.add(currentDish);
+            shownDishes.add(currentDish);
         }
 
-        updateFragments(filteredDishes);
 
+
+        updateFragments(shownDishes);
+
+    }
+
+    @Override
+    public void onPause()
+    {
+        super.onPause();
+
+        //TODO: Fix the crashing and get rid of dis ugly piece of shit
+        System.exit(0);
     }
 }

@@ -71,7 +71,6 @@
                 android:id="@+id/cardFoodRating"
                 android:layout_toRightOf="@id/cardPreviewImage"
                 android:layout_alignParentBottom="true"
-                android:layout_alignParentEnd="true"
                 />
 
             <TextView
@@ -82,6 +81,16 @@
                 android:padding="12dp"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentEnd="true" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/cardFoodScore"
+                android:paddingBottom="12dp"
+                android:layout_alignParentBottom="true"
+                android:layout_toRightOf="@id/cardFoodRating"
+                android:paddingLeft="40dp"
+                android:text="1402fp"/>
 
         </RelativeLayout>
 

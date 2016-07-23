@@ -13,7 +13,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 
@@ -52,6 +51,36 @@ public class Utils {
         return result;
     }
 
+    public static ArrayList<Dish> sortByScore(ArrayList<Dish> values)
+    {
+        ArrayList<Dish> result = new ArrayList<>();
+
+        while(values.size() > 0)
+        {
+            float max = 0;
+            int index = 0;
+            int iteration = 0;
+
+            for(Dish currentDish : values)
+            {
+                float h = currentDish.getScore(FilterFoods.priceWeighting / 100f, FilterFoods.distanceWeighting / 100f, FilterFoods.ratingWeighting / 100f);
+
+                if(h > max)
+                {
+                    max = h;
+                    index = iteration;
+                }
+
+                iteration++;
+            }
+
+            result.add(values.get(index));
+            values.remove(index);
+        }
+
+        return result;
+    }
+
     public static String convertStreamToString(java.io.InputStream is) {
         BufferedReader r = null;
         try {
@@ -76,7 +105,7 @@ public class Utils {
     static int LOAD_COUNT = 1;
     public static String loadFile(String name)
     {
-        AssetManager am = MainActivity.c.getApplicationContext().getAssets();
+        AssetManager am = MainActivity.applicationContext.getApplicationContext().getAssets();
         String data = "";
 
         try {
@@ -130,7 +159,7 @@ public class Utils {
 
     public static LatLng getLocationFromAddress(String strAddress) {
 
-        Geocoder coder = new Geocoder(MainActivity.c);
+        Geocoder coder = new Geocoder(MainActivity.applicationContext);
         List<Address> address;
         LatLng p1 = null;
 
@@ -195,7 +224,7 @@ public class Utils {
                    Math.sin(dLng / 2.0) * Math.sin(dLng / 2.0);
         double c = 2.0 * Math.atan2(Math.sqrt(a), Math.sqrt(1.0 - a));
         double d = R * c;
-        Log.i("FoodFindDebug", "Distance calculated: lat1: " + lat1 + " lng1: " + lng1 + " lat2: " + lat2 + " lng2: " + lng2 + " distance: " + d);
+
         return d; // returns the distance in meter
     }
 

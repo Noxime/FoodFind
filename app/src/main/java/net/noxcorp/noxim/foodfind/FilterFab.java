@@ -51,7 +51,7 @@ public class FilterFab extends Fragment {
         FloatingActionButton myFab = (FloatingActionButton)  v.findViewById(R.id.fab);
         myFab.setOnClickListener(new View.OnClickListener() {
             public void onClick(View view) {
-                new FilterFoods().show(MainActivity.m.getFragmentManager(), "FoodFindDebug");
+                new FilterFoods().show(MainActivity.mainActivity.getFragmentManager(), "FoodFindDebug");
             }
         });
 

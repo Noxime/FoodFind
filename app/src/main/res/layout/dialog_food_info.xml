@@ -13,7 +13,7 @@
         android:id="@+id/food_info_image"
         android:layout_alignParentLeft="true"
         />
-    
+
     <TextView
         android:padding="2dp"
         android:textSize="38dp"
@@ -21,7 +21,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/food_info_image"
         android:id="@+id/food_info_rating"
-        android:text="\u2605\u2605\u2605\u2605\u2605"/>
+        android:text="\u2605\u2605\u2605\u2605\u2605"
+        android:textColor="@color/colorGold"/>
 
 
     <TextView
@@ -53,6 +54,205 @@
         android:paddingLeft="192dp"
         android:paddingTop="8dp"
         android:layout_below="@id/food_info_restaurant"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/food_info_ingredients"
+        android:text="Placeholder ingredients"
+        android:paddingLeft="192dp"
+        android:paddingTop="8dp"
+        android:layout_below="@id/food_info_description"/>
+
+
+
+    <ScrollView
+        android:layout_width="180dp"
+        android:layout_height="120dp"
+        android:layout_below="@id/food_info_rating"
+        android:id="@+id/food_info_allergy_list">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:padding="6dp">
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Is vegan"/>
+                <TextView
+                    android:id="@+id/food_info_is_vegan"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has egg"/>
+                <TextView
+                    android:id="@+id/food_info_has_egg"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has gluten"/>
+                <TextView
+                    android:id="@+id/food_info_has_gluten"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has milk protein"/>
+                <TextView
+                    android:id="@+id/food_info_has_milkprotein"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has nuts"/>
+                <TextView
+                    android:id="@+id/food_info_has_nuts"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has mollusks"/>
+                <TextView
+                    android:id="@+id/food_info_has_molluscs"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has crustaceans"/>
+                <TextView
+                    android:id="@+id/food_info_has_crustaceans"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has fish"/>
+                <TextView
+                    android:id="@+id/food_info_has_fish"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has lactose"/>
+                <TextView
+                    android:id="@+id/food_info_has_lactose"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Has soy"/>
+                <TextView
+                    android:id="@+id/food_info_has_soy"
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:text="Maybe"
+                    android:textAlignment="gravity"
+                    android:gravity="right"
+                    />
+            </RelativeLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
+
+
 
 
 </RelativeLayout>

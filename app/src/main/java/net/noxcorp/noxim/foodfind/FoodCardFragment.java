@@ -30,13 +30,15 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
 
     private OnFragmentInteractionListener mListener;
 
-    public FoodCardFragment() {
-        setFromDish(dish);
+    public FoodCardFragment()
+    {
+
     }
 
     public void setDish(Dish dish) {
         this.dish = dish;
-        //setFromDish(dish);
+        if(v != null && isAdded())
+            setFromDish(dish);
     }
 
     private void setFromDish(Dish dish) {
@@ -46,10 +48,18 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
         setPrice(dish.priceInEuros);
         setImage(dish.previewImage);
         setDistance((float) Utils.distance(dish.latitude, dish.longitude, MainActivity.latestLatitude, MainActivity.latestLongitude));
+        setScore(dish.getScore(FilterFoods.priceWeighting, FilterFoods.distanceWeighting, FilterFoods.ratingWeighting));
     }
 
+    boolean onViewCreateUpdateDistance = false;
     public void updateDistance() {
-        setFromDish(dish);
+        if(v == null)
+        {
+            onViewCreateUpdateDistance = true;
+        }
+        else {
+            setFromDish(dish);
+        }
     }
 
     public static FoodCardFragment newInstance() {
@@ -69,6 +79,11 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
     public void setRestaurant(String text) {
         if (v != null && isAdded())
             rname.setText(text);
+    }
+    TextView fscor;
+    public void setScore(int score) {
+        if (v != null && isAdded())
+            fscor.setText(score + "fp");
     }
 
     TextView fpric;
@@ -92,11 +107,10 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
     {
         if(v == null || !isAdded())
         {
-            Log.e("FoodFindDebug", "Fragment " + dish.name + " not valid or something?");
+            Log.w("FoodFindDebug", "Fragment " + dish.name + " not valid or something? v == null: " + (v == null) + " !isAdded(): " + !isAdded());
             new Exception().printStackTrace();
             return;
         }
-        Log.i("FoodFindDebug", "Fragment valid");
         iview.setImageResource(iview.getContext().getResources().getIdentifier(text, "drawable", iview.getContext().getPackageName()));
     }
 
@@ -134,11 +148,13 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
         iview = (ImageView)v.findViewById(R.id.cardPreviewImage);
         fdist = (TextView) v.findViewById(R.id.cardFoodDistance);
         frati = (TextView) v.findViewById(R.id.cardFoodRating);
+        fscor = (TextView) v.findViewById(R.id.cardFoodScore);
 
         setFromDish(dish);
 
         CardView cv = (CardView)v.findViewById(R.id.card_view);
         cv.setOnClickListener(this);
+        onViewCreateUpdateDistance = false;
         return v;
     }
 
@@ -174,7 +190,7 @@ public class FoodCardFragment extends Fragment implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         Log.i("FoodFindDebug", "Touched " + dish.name);
-        new FoodInfo().setDish(dish).show(MainActivity.m.getFragmentManager(), "FoodFindDebug");
+        new FoodInfo().setDish(dish).show(MainActivity.mainActivity.getFragmentManager(), "FoodFindDebug");
     }
 
     public interface OnFragmentInteractionListener {

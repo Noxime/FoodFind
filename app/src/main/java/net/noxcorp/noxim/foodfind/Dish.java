@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.util.Log;
 
 /**
  * Created by Noxim on 21.6.2016.
@@ -39,7 +40,27 @@ public class Dish {
 
     public Dish()
     {
-
+        this.name           = "Constructor";
+        this.description    = "Constructor";
+        this.ingredients    = "Constructor";
+        this.restaurant     = "Constructor";
+        this.phonenumber    = "Constructor";
+        this.priceInEuros   = 1;
+        this.rating         = 5;
+        this.hasLactose     = NO;
+        this.hasGluten      = NO;
+        this.isVegan        = YES;
+        this.hasEgg         = NO;
+        this.hasMilkProtein = NO;
+        this.hasNuts        = NO;
+        this.hasMolluscs    = NO;
+        this.hasCrustaceans = NO;
+        this.hasFish        = NO;
+        this.hasSoy         = NO;
+        this.previewImage   = "uv_checker_large";
+        this.address        = "Constructor";
+        this.latitude       = 0;
+        this.longitude      = 0;
     }
 
     public Dish(String name,
@@ -85,6 +106,26 @@ public class Dish {
         this.address        = address;
         this.latitude       = latitude;
         this.longitude      = longitude;
+    }
+
+    public int getScore(float priceWeighting, float distanceWeighting, float ratingWeighting)
+    {
+        float normalizer = priceWeighting + distanceWeighting + ratingWeighting;
+        priceWeighting /= normalizer;
+        distanceWeighting /= normalizer;
+        ratingWeighting /= normalizer;
+
+        float distance = (float)Utils.distance(latitude, longitude, MainActivity.latestLatitude, MainActivity.latestLongitude);
+
+        int distanceScore = (int)(100000 / (distance / 10f));
+
+        int ratingScore = (int)(rating * 1000f);
+
+        int priceScore = (int)(5000f / priceInEuros);
+
+        Log.i("FoodFindDebug", distanceScore + " " + ratingScore + " " + priceScore);
+
+        return (int)((float)distanceScore * distanceWeighting + (float)priceScore * priceWeighting + (float)ratingScore * ratingWeighting);
     }
 
 }
